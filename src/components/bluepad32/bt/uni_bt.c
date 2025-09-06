@@ -165,19 +165,19 @@ static void on_hci_disconnection_complete(uint16_t channel, const uint8_t* packe
         // Get type before it gets destroyed.
         type = gap_get_connection_type(d->conn.handle);
 
-        logi("Device %s disconnected, deleting it. Reason=%#x, status=%d\n", bd_addr_to_str(d->conn.btaddr), reason,
-             status);
-        uni_hid_device_disconnect(d);
-        uni_hid_device_delete(d);
-        // Device cannot be used after delete.
-        d = NULL;
-
         if (IS_ENABLED(UNI_ENABLE_BLE) && type == GAP_CONNECTION_LE)
             uni_bt_le_on_hci_disconnection_complete(channel, packet, size);
         else if (IS_ENABLED(UNI_ENABLE_BREDR) && type == GAP_CONNECTION_ACL)
             uni_bt_bredr_on_hci_disconnection_complete(channel, packet, size);
         else
             loge("on_hci_disconnection_complete: Unknown GAP connection type: %d\n", type);
+
+        logi("Device %s disconnected, deleting it. Reason=%#x, status=%d\n", bd_addr_to_str(d->conn.btaddr), reason,
+             status);
+        uni_hid_device_disconnect(d);
+        uni_hid_device_delete(d);
+        // Device cannot be used after delete.
+        d = NULL;
     }
 }
 
