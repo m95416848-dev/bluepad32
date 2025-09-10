@@ -49,7 +49,8 @@
     - Allowlist works Ok on Pico W by adding "string" support to properties.
 - Lauri Sovinen:
     - Add dependencie in esp32 builder
-
+- Daniel
+    - Update supported mouse documentation
 
 ## People who contributed with ideas and/or testing
 
@@ -78,6 +79,7 @@
 - Trevor Rudolph: Donated [Wii uDraw Tablet][wii_udraw_tablet]
 - Martin Pfingstl
 - Lieven Merckx
+- gopro2027
 
 
 [*]: Multiple times or generous donations
