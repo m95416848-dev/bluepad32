@@ -39,8 +39,11 @@
 #define TASK_TIMER_STACK_SIZE (2048)
 #define TASK_TIMER_PRIO (10)
 
-// Default scale factor for the mouse movement
-#define DETAULT_SCALE_FACTOR (1)
+// Quadrature phases
+#define QUADRATURE_PHASES 4
+
+// Helper to pack port and encoder indexes into a single argument for a task.
+#define PACK_TIMER_ARG(port, encoder) ((void*)(((port) << 16) | (encoder)))
 
 enum direction {
     PHASE_DIRECTION_NEG,
@@ -78,46 +81,25 @@ static float s_scale_factor;
 
 static bool initialized;
 
-static void process_quadrature(struct quadrature_state* q) {
-    int a, b;
+// Quadrature phase outputs for GPIO A and B.
+// Index is the phase (0-3).
+static const int phase_to_a[] = {0, 1, 1, 0};
+static const int phase_to_b[] = {0, 0, 1, 1};
 
+static void process_quadrature(struct quadrature_state* q) {
     if (q->value <= 0) {
         return;
     }
     q->value--;
 
     if (q->dir == PHASE_DIRECTION_NEG) {
-        q->phase--;
-        if (q->phase < 0)
-            q->phase = 3;
+        q->phase = (q->phase - 1 + QUADRATURE_PHASES) % QUADRATURE_PHASES;
     } else /* PHASE_DIRECTION_POS */ {
-        q->phase++;
-        if (q->phase > 3)
-            q->phase = 0;
+        q->phase = (q->phase + 1) % QUADRATURE_PHASES;
     }
 
-    switch (q->phase) {
-        case 0:
-            a = 0;
-            b = 0;
-            break;
-        case 1:
-            a = 1;
-            b = 0;
-            break;
-        case 2:
-            a = 1;
-            b = 1;
-            break;
-        case 3:
-            a = 0;
-            b = 1;
-            break;
-        default:
-            loge("%s: invalid phase value: %d", __func__, q->phase);
-            a = b = 0;
-            break;
-    }
+    int a = phase_to_a[q->phase];
+    int b = phase_to_b[q->phase];
 
     int gpio_a = q->gpios.a;
     int gpio_b = q->gpios.b;
@@ -126,12 +108,11 @@ static void process_quadrature(struct quadrature_state* q) {
     logd("value: %d, quadrature phase: %d, a=%d, b=%d (%d,%d)\n", q->value, q->phase, a, b, gpio_a, gpio_b);
 }
 
-// Don't be confused, that is just one task.
-// Actually, this callback is called from 4 different tasks.
+// This function is the entry point for each of the timer tasks.
 static void timer_task(void* arg) {
-    uint32_t a = (uint32_t)arg;
-    uint16_t port_idx = (a >> 16);
-    uint16_t encoder_idx = (a & 0xffff);
+    uint32_t task_arg = (uint32_t)arg;
+    uint16_t port_idx = (task_arg >> 16);
+    uint16_t encoder_idx = (task_arg & 0xffff);
 
     while (true) {
         ulTaskNotifyTake(true, portMAX_DELAY);
@@ -140,9 +121,9 @@ static void timer_task(void* arg) {
 }
 
 static bool timer_handler(void* arg) {
-    uint32_t a = (uint32_t)arg;
-    uint16_t port_idx = (a >> 16);
-    uint16_t encoder_idx = (a & 0xffff);
+    uint32_t task_arg = (uint32_t)arg;
+    uint16_t port_idx = (task_arg >> 16);
+    uint16_t encoder_idx = (task_arg & 0xffff);
 
     BaseType_t higher_priority_task_woken = false;
     vTaskNotifyGiveFromISR(s_timer_tasks[port_idx][encoder_idx], &higher_priority_task_woken);
@@ -166,19 +147,19 @@ static void init_from_cpu_task() {
 
     for (int i = 0; i < UNI_MOUSE_QUADRATURE_PORT_MAX; i++) {
         for (int j = 0; j < UNI_MOUSE_QUADRATURE_ENCODER_MAX; j++) {
-            uint32_t arg = (i << 16) | j;
+            void* arg = PACK_TIMER_ARG(i, j);
             char name[32];
             ESP_ERROR_CHECK(timer_init(s_quadratures[i][j].timer_group, s_quadratures[i][j].timer_idx, &config));
             timer_set_counter_value(s_quadratures[i][j].timer_group, s_quadratures[i][j].timer_idx, ONE_SECOND * 60);
-            timer_isr_callback_add(s_quadratures[i][j].timer_group, s_quadratures[i][j].timer_idx, timer_handler,
-                                   (void*)arg, 0);
+            timer_isr_callback_add(s_quadratures[i][j].timer_group, s_quadratures[i][j].timer_idx, timer_handler, arg,
+                                   0);
             // Don't start timer automatically. They should be started on demand.
             // timer_start(s_quadratures[i][j].timer_group, s_quadratures[i][j].timer_idx);
 
             // Create timer tasks
             sprintf(name, "bp.quad.timer%d%c", i, (j == 0) ? 'H' : 'V');
-            xTaskCreatePinnedToCore(timer_task, name, TASK_TIMER_STACK_SIZE, (void*)arg, TASK_TIMER_PRIO,
-                                    &s_timer_tasks[i][j], xPortGetCoreID());
+            xTaskCreatePinnedToCore(timer_task, name, TASK_TIMER_STACK_SIZE, arg, TASK_TIMER_PRIO, &s_timer_tasks[i][j],
+                                    xPortGetCoreID());
         }
     }
 
