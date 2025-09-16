@@ -4,7 +4,7 @@ Supports the different ESP32 chips:
 
 * ESP32
 * ESP32-S3
-* ESP32-C3 / ESP32-C6
+* ESP32-C3 / ESP32-C5 / ESP32-C6
 * ESP32-H2
 
 ## Install dependencies
@@ -37,7 +37,7 @@ Supports the different ESP32 chips:
 
 ## Debugging
 
-In case you need to debug an ESP32-S3 (or ESP32-C3 / C6) using JTAG, follow these steps: (or
+In case you need to debug an ESP32-S3 (or ESP32-C3, C5 or C6) using JTAG, follow these steps: (or
 read [ESP32 JTAG Debugging][esp32-gdb]).
 
 *Note: If you have a standard ESP32, you can do it with an [ESP-PROG][esp-prog] module.*

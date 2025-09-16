@@ -74,18 +74,18 @@ Parameters:
 
 !!! Note
 
-    Although Bluepad32 works both with ESP-IDF v4.4 and 5.x, Unijoysticle, NINA and MightyMiggy require ESP-IDF v4.4.
+    Although Bluepad32 works both with ESP-IDF 5.x, NINA and MightyMiggy require ESP-IDF v4.4.
 
 ## For Windows
 
-1. Install [ESP-IDF v4.4][esp-idf-windows-installer]. For further info,
+1. Install [ESP-IDF v5.5][esp-idf-windows-installer]. For further info,
    read: [ESP-IDF Getting Started for Windows][esp-idf-windows-setup]
 
     * Either the Online or Offline version should work
     * When asked which components to install, don't change anything. Default options are Ok.
     * When asked whether ESP can modify the system, answer "Yes"
 
-2. Launch the "ESP-IDF v4.4 CMD" (type that in the Windows search box)
+2. Launch the "ESP-IDF v5.5 CMD" (type that in the Windows search box)
 
 3. From the ESP-IDF cmd, clone Bluepad32 repo
 
@@ -116,7 +116,7 @@ Parameters:
 
 [esp-idf-windows-setup]: https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/windows-setup.html
 
-[esp-idf-windows-installer]: https://dl.espressif.com/dl/esp-idf/?idf=4.4
+[esp-idf-windows-installer]: https://dl.espressif.com/dl/esp-idf/?idf=5.5
 
 ## For Linux / macOS
 
@@ -143,7 +143,7 @@ Parameters:
       # Needs to be done just once
       # Clone the ESP-IDF git repo
       mkdir ~/esp && cd ~/esp
-      git clone -b release/v4.4 --recursive https://github.com/espressif/esp-idf.git
+      git clone -b release/v5.5 --recursive https://github.com/espressif/esp-idf.git
 
       # Then install the toolchain
       cd ~/esp/esp-idf

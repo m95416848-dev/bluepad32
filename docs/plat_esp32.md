@@ -6,7 +6,7 @@
 
 - ESP32
 - ESP32-S3
-- ESP32-C3 / ESP32-C6
+- ESP32-C3 / ESP32-C5 / ESP32-C6
 - ESP32-H2
 
 [esp32_socs]: https://www.espressif.com/en/products/socs
@@ -23,7 +23,7 @@ TL;DR:
 - [Linux / macOS users](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/get-started/linux-macos-setup.html)
 
 
-It works with ESP-IDF v4.4, but v5.3 or newer is recommended.
+ESP-IDF v5.5 or newer is recommended.
 
 ### 2. Clone Bluepad32 GitHub repo
 
