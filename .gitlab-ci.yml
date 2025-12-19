@@ -29,7 +29,7 @@ build-debian-linux-clang:
     - cd examples/posix && mkdir build && cd build && cmake .. && CC=clang make -j
 
 build-esp-idf-5.5:
-  image: espressif/idf:release-v5.5
+  image: espressif/idf:release-v5.5.1
   variables:
     GIT_SUBMODULE_STRATEGY: recursive
   stage: build

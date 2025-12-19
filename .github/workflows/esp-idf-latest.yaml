@@ -24,7 +24,7 @@ jobs:
     - name: Unijoysticle build
       uses: espressif/esp-idf-ci-action@main
       with:
-        esp_idf_version: release-v5.5
+        esp_idf_version: release-v5.5.1
         target: esp32
         path: 'src'
         command: 'idf.py -B build_plat_unijoysticle -D SDKCONFIG_DEFAULTS="sdkconfig.defaults;sdkconfig.ci.plat_unijoysticle" build'
@@ -32,7 +32,7 @@ jobs:
     - name: Example ESP32 build
       uses: espressif/esp-idf-ci-action@main
       with:
-        esp_idf_version: release-v5.5
+        esp_idf_version: release-v5.5.1
         target: esp32
         path: 'examples/esp32'
         command: "idf.py set-target esp32 && idf.py build"
@@ -40,7 +40,7 @@ jobs:
     - name: Example ESP32-S3 build
       uses: espressif/esp-idf-ci-action@main
       with:
-        esp_idf_version: release-v5.5
+        esp_idf_version: release-v5.5.1
         target: esp32-s3
         path: 'examples/esp32'
         command: "idf.py set-target esp32s3 && idf.py build"
@@ -48,7 +48,7 @@ jobs:
     - name: Example ESP32-C3 build
       uses: espressif/esp-idf-ci-action@main
       with:
-        esp_idf_version: release-v5.5
+        esp_idf_version: release-v5.5.1
         target: esp32-c3
         path: 'examples/esp32'
         command: "idf.py set-target esp32c3 && idf.py build"
@@ -56,7 +56,7 @@ jobs:
     - name: Example ESP32-C6 build
       uses: espressif/esp-idf-ci-action@main
       with:
-        esp_idf_version: release-v5.5
+        esp_idf_version: release-v5.5.1
         target: esp32-c6
         path: 'examples/esp32'
         command: "idf.py set-target esp32c6 && idf.py build"
@@ -64,7 +64,7 @@ jobs:
     - name: Example ESP32-H2 build
       uses: espressif/esp-idf-ci-action@main
       with:
-        esp_idf_version: release-v5.5
+        esp_idf_version: release-v5.5.1
         target: esp32-h2
         path: 'examples/esp32'
         command: "idf.py set-target esp32h2 && idf.py build"
@@ -72,7 +72,7 @@ jobs:
     - name: Example ESP32-C5 build
       uses: espressif/esp-idf-ci-action@main
       with:
-        esp_idf_version: release-v5.5
+        esp_idf_version: release-v5.5.1
         target: esp32-c5
         path: 'examples/esp32'
         command: "idf.py set-target esp32c5 && idf.py build"
