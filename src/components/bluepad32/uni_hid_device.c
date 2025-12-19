@@ -84,7 +84,7 @@ uni_hid_device_t* uni_hid_device_create(bd_addr_t address) {
     if (i == -1)
         return NULL;
 
-    logi("Creating device: %s (idx=%d)\n", bd_addr_to_str(address), i);
+    logi("Creating device: %s (idx=%d)\n", bd_addr_to_str(address), (int)i);
 
     uni_hid_device_init(&g_devices[i]);
     bd_addr_copy(g_devices[i].conn.btaddr, address);
@@ -102,7 +102,7 @@ uni_hid_device_t* uni_hid_device_create_virtual(uni_hid_device_t* parent) {
     if (i == -1)
         return NULL;
 
-    logi("Creating virtual device (idx=%d)\n", i);
+    logi("Creating virtual device (idx=%d)\n", (int)i);
 
     // Don't memset the device, it is already "clean".
     // memsetting could break the initialization.
@@ -124,7 +124,7 @@ uni_hid_device_t* uni_hid_device_create_virtual(uni_hid_device_t* parent) {
     // All virtual devices have a "controller type", which is known by the parent.
     g_devices[i].flags |= FLAGS_HAS_CONTROLLER_TYPE;
 
-    snprintf(g_devices[i].name, sizeof(g_devices[i].name), "virtual-%d", i);
+    snprintf(g_devices[i].name, sizeof(g_devices[i].name), "virtual-%d", (int)i);
 
     return &g_devices[i];
 }
