@@ -55,3 +55,6 @@ ui_*.h
 sdkconfig
 sdkconfig.old
 dependencies.lock
+
+# From some IDEs
+src/.cache
