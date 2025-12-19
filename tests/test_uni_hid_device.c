@@ -2,6 +2,10 @@
 #include <stdio.h>
 #include <string.h>
 
+#include <btstack_memory.h>
+#include <btstack_run_loop.h>
+#include <btstack_run_loop_posix.h>
+
 #include "platform/uni_platform.h"
 #include "uni_hid_device.h"
 
@@ -83,10 +87,6 @@ static void test_device_properties(void) {
     uni_hid_device_delete(d);
     printf("PASS\n");
 }
-
-#include <btstack_memory.h>
-#include <btstack_run_loop.h>
-#include <btstack_run_loop_posix.h>
 
 int main(int argc, char** argv) {
     // Initialize btstack run loop
