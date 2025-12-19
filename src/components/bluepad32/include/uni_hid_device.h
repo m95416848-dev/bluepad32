@@ -234,14 +234,14 @@ uni_hid_device_t* uni_hid_device_get_instance_with_predicate(uni_hid_device_pred
  * @param idx The index.
  * @return The HID device, or NULL if not found.
  */
-uni_hid_device_t* uni_hid_device_get_instance_for_idx(int idx);
+uni_hid_device_t* uni_hid_device_get_instance_for_idx(int32_t idx);
 
 /**
  * @brief Returns the index of the given HID device.
  * @param d The HID device.
  * @return The index, or -1 if not found.
  */
-int uni_hid_device_get_idx_for_instance(const uni_hid_device_t* d);
+int32_t uni_hid_device_get_idx_for_instance(const uni_hid_device_t* d);
 
 /**
  * @brief Initializes a HID device.
