@@ -1,5 +1,5 @@
 set(srcs "main.c")
-
+#asd
 set(requires "bluepad32" "btstack")
 
 idf_component_register(SRCS "${srcs}"
