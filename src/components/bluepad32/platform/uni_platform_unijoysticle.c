@@ -1466,7 +1466,7 @@ static void set_next_gamepad_mode(uni_hid_device_t* d) {
 
     ins = uni_platform_unijoysticle_get_instance(d);
 
-    // Order is:
+    // Order is:JK
     // Normal -> Mouse -> Twin Stick -> Normal...
     switch (ins->gamepad_mode) {
     case UNI_PLATFORM_UNIJOYSTICLE_GAMEPAD_MODE_NORMAL:
