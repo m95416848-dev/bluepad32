@@ -1469,20 +1469,24 @@ static void set_next_gamepad_mode(uni_hid_device_t* d) {
     // Order is:JK
     // Normal -> Mouse -> Twin Stick -> Normal...
     switch (ins->gamepad_mode) {
-    case UNI_PLATFORM_UNIJOYSTICLE_GAMEPAD_MODE_NORMAL:
-        set_gamepad_mode(d, UNI_PLATFORM_UNIJOYSTICLE_GAMEPAD_MODE_MOUSE);
-        break;
-
-    case UNI_PLATFORM_UNIJOYSTICLE_GAMEPAD_MODE_MOUSE:
-        set_gamepad_mode(d, UNI_PLATFORM_UNIJOYSTICLE_GAMEPAD_MODE_TWINSTICK);
-        break;
-
-    case UNI_PLATFORM_UNIJOYSTICLE_GAMEPAD_MODE_TWINSTICK:
-        set_gamepad_mode(d, UNI_PLATFORM_UNIJOYSTICLE_GAMEPAD_MODE_NORMAL);
-        break;
-
-    default:
-        loge("Unexpected value: %d", ins->gamepad_mode);
+        case UNI_PLATFORM_UNIJOYSTICLE_GAMEPAD_MODE_NORMAL:
+            if (UNI_PLATFORM_UNIJOYSTICLE_GAMEPAD_MODE_MOUSE)
+                set_gamepad_mode(d, UNI_PLATFORM_UNIJOYSTICLE_GAMEPAD_MODE_MOUSE);
+            else if (UNI_PLATFORM_UNIJOYSTICLE_GAMEPAD_MODE_TWINSTICK)
+                set_gamepad_mode(d, UNI_PLATFORM_UNIJOYSTICLE_GAMEPAD_MODE_TWINSTICK);
+            // else: Nothing
+            break;
+        case UNI_PLATFORM_UNIJOYSTICLE_GAMEPAD_MODE_MOUSE:
+            if (UNI_PLATFORM_UNIJOYSTICLE_GAMEPAD_MODE_TWINSTICK)
+                set_gamepad_mode(d, UNI_PLATFORM_UNIJOYSTICLE_GAMEPAD_MODE_TWINSTICK);
+            else
+                set_gamepad_mode(d, UNI_PLATFORM_UNIJOYSTICLE_GAMEPAD_MODE_NORMAL);
+            break;
+        case UNI_PLATFORM_UNIJOYSTICLE_GAMEPAD_MODE_TWINSTICK:
+            set_gamepad_mode(d, UNI_PLATFORM_UNIJOYSTICLE_GAMEPAD_MODE_NORMAL);
+            break;
+        default:
+            loge("Unexpected value: %d", ins->gamepad_mode);
     }
 }
 
