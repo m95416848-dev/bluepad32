@@ -28,20 +28,26 @@ jobs:
         cd external/btstack/port/esp32
         IDF_PATH=../../../../src/ ./integrate_btstack.py
 
-    - name: Unijoysticle build and merge
+    - name: Unijoysticle build
       uses: espressif/esp-idf-ci-action@main
       with:
         esp_idf_version: release-v4.4
         target: esp32
         path: 'src'
-        # Η εντολή 'build merge-bin' ενώνει όλα τα αρχεία σε ένα
-        command: 'idf.py -B build_unijoysticle -D SDKCONFIG_DEFAULTS="sdkconfig.defaults;sdkconfig.ci.plat_unijoysticle" build merge-bin'
+        # Κάνουμε απλό build χωρίς το merge-bin που χτυπάει
+        command: 'idf.py -B build_unijoysticle -D SDKCONFIG_DEFAULTS="sdkconfig.defaults;sdkconfig.ci.plat_unijoysticle" build'
+
+    - name: Manual Merge Binary
+      shell: bash
+      run: |
+        # Μετακινούμαστε στον φάκελο του build
+        cd src/build_unijoysticle
+        # Χρησιμοποιούμε το esptool για να ενώσουμε τα αρχεία βάσει του flash_args
+        esptool.py --chip esp32 merge_bin -o merged-binary.bin @flash_args
 
     - name: Upload Full Flash Image
       uses: actions/upload-artifact@v4
       with:
         name: unijoysticle-full-0x0
-        path: |
-          src/build_unijoysticle/merged-binary.bin
-          src/build_unijoysticle/flash_args
+        path: src/build_unijoysticle/merged-binary.bin
         if-no-files-found: error
