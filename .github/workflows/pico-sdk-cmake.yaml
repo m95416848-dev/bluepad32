@@ -16,12 +16,12 @@ jobs:
 
     steps:
     - name: Checkout repo
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       with:
         submodules: 'recursive'
 
     - name: Checkout pico-sdk/develop
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       with:
         repository: raspberrypi/pico-sdk
         ref: develop
