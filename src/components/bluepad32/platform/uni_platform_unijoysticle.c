@@ -1470,14 +1470,14 @@ static void set_next_gamepad_mode(uni_hid_device_t* d) {
     // Normal -> Mouse -> Twin Stick -> Normal...
     switch (ins->gamepad_mode) {
         case UNI_PLATFORM_UNIJOYSTICLE_GAMEPAD_MODE_NORMAL:
-            if (g_variant->supported_modes & UNI_PLATFORM_UNIJOYSTICLE_GAMEPAD_MODE_MOUSE)
+            if (UNI_PLATFORM_UNIJOYSTICLE_GAMEPAD_MODE_MOUSE)
                 set_gamepad_mode(d, UNI_PLATFORM_UNIJOYSTICLE_GAMEPAD_MODE_MOUSE);
-            else if (g_variant->supported_modes & UNI_PLATFORM_UNIJOYSTICLE_GAMEPAD_MODE_TWINSTICK)
+            else if (UNI_PLATFORM_UNIJOYSTICLE_GAMEPAD_MODE_TWINSTICK)
                 set_gamepad_mode(d, UNI_PLATFORM_UNIJOYSTICLE_GAMEPAD_MODE_TWINSTICK);
             // else: Nothing
             break;
         case UNI_PLATFORM_UNIJOYSTICLE_GAMEPAD_MODE_MOUSE:
-            if (g_variant->supported_modes & UNI_PLATFORM_UNIJOYSTICLE_GAMEPAD_MODE_TWINSTICK)
+            if (UNI_PLATFORM_UNIJOYSTICLE_GAMEPAD_MODE_TWINSTICK)
                 set_gamepad_mode(d, UNI_PLATFORM_UNIJOYSTICLE_GAMEPAD_MODE_TWINSTICK);
             else
                 set_gamepad_mode(d, UNI_PLATFORM_UNIJOYSTICLE_GAMEPAD_MODE_NORMAL);
