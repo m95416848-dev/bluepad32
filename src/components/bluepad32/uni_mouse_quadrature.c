@@ -40,7 +40,7 @@
 #define TASK_TIMER_PRIO (10)
 
 // Default scale factor for the mouse movement
-#define DETAULT_SCALE_FACTOR (5)
+#define DETAULT_SCALE_FACTOR (3)
 
 enum direction {
     PHASE_DIRECTION_NEG,
