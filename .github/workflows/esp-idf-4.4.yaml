@@ -18,15 +18,11 @@ jobs:
 
     - name: Patch BTstack
       shell: bash
-      run: |
-        cd external/btstack
-        git apply ../patches/*.patch
+      run: cd external/btstack && git apply ../patches/*.patch
 
     - name: Install BTstack
       shell: bash
-      run: |
-        cd external/btstack/port/esp32
-        IDF_PATH=../../../../src/ ./integrate_btstack.py
+      run: cd external/btstack/port/esp32 && IDF_PATH=../../../../src/ ./integrate_btstack.py
 
     - name: Unijoysticle build
       uses: espressif/esp-idf-ci-action@main
@@ -34,20 +30,12 @@ jobs:
         esp_idf_version: release-v4.4
         target: esp32
         path: 'src'
-        # Κάνουμε απλό build χωρίς το merge-bin που χτυπάει
+        # Χρησιμοποιούμε το συγκεκριμένο sdkconfig που ζήτησες
         command: 'idf.py -B build_unijoysticle -D SDKCONFIG_DEFAULTS="sdkconfig.defaults;sdkconfig.ci.plat_unijoysticle" build'
 
-    - name: Manual Merge Binary
-      shell: bash
-      run: |
-        # Μετακινούμαστε στον φάκελο του build
-        cd src/build_unijoysticle
-        # Χρησιμοποιούμε το esptool για να ενώσουμε τα αρχεία βάσει του flash_args
-        esptool.py --chip esp32 merge_bin -o merged-binary.bin @flash_args
-
-    - name: Upload Full Flash Image
+    - name: Upload Unijoysticle Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: unijoysticle-full-0x0
-        path: src/build_unijoysticle/merged-binary.bin
+        name: unijoysticle-binary
+        path: src/build_unijoysticle/**/*.bin
         if-no-files-found: error
